@@ -35,9 +35,12 @@ resource "digitalocean_droplet" "demo-admin" {
       "export PATH=$PATH:/usr/bin",
       "sudo yum install -y epel-release yum-utils",
       "sudo yum-config-manager --enable cr",
-      "sudo yum install -y etcd cryptsetup.x86_64 cryptsetup-libs.x86_64 wget",
+      "sudo yum install -y etcd cryptsetup.x86_64 cryptsetup-libs.x86_64 wget salt-master",
       "chmod +x /opt/scripts/*.sh",
 
+      "sudo systemctl enable salt-master",
+      "/opt/scripts/fixsaltmaster.sh ${digitalocean_droplet.demo-admin.ipv4_address_private}",
+      "sudo systemctl start salt-master",
       "sudo yum install -y ceph-deploy",
       "sudo yum install -y ntp ntpdate ntp-doc",
     ]

@@ -5,6 +5,20 @@ resource "null_resource" "cluster-config" {
         "digitalocean_droplet.demo-minion",
     ]
 
+  connection {
+      host = "${digitalocean_droplet.demo-admin.ipv4_address}"
+      user = "root"
+      type = "ssh"
+      key_file = "${var.pvt_key}"
+      timeout = "10m"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+        "salt-key -Ay",
+    ]
+  }
+
     provisioner "local-exec" {
      command = "echo ${join(\" \", digitalocean_droplet.demo-master.*.ipv4_address_private)} > node.master.private"
     }

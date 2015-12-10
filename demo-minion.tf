@@ -29,9 +29,13 @@ resource "digitalocean_droplet" "demo-minion" {
   provisioner "remote-exec" {
     inline = [
       "export PATH=$PATH:/usr/bin",
-      "sudo yum install -y etcd cryptsetup.x86_64 cryptsetup-libs.x86_64",
+      "sudo yum install -y epel-release yum-utils",
+      "sudo yum install -y etcd cryptsetup.x86_64 cryptsetup-libs.x86_64 salt-minion",
       "sudo chmod +x /opt/scripts/*.sh",
       "/opt/scripts/fixupetcd.sh ${digitalocean_droplet.demo-master.0.ipv4_address_private}",
+      "sudo systemctl enable salt-minion",
+      "/opt/scripts/fixsaltminion.sh ${digitalocean_droplet.demo-admin.ipv4_address_private}",
+      "sudo systemctl start salt-minion",
     ]
   }
 }
