@@ -37,9 +37,6 @@ resource "digitalocean_droplet" "demo-admin" {
       "sudo yum-config-manager --enable cr",
       "sudo yum install -y etcd cryptsetup.x86_64 cryptsetup-libs.x86_64 wget",
       "chmod +x /opt/scripts/*.sh",
-      "/opt/scripts/fixupetcd.sh ${digitalocean_droplet.demo-admin.ipv4_address_private}",
-      "sudo systemctl enable etcd",
-      "sudo systemctl start etcd",
 
       "sudo yum install -y ceph-deploy",
       "sudo yum install -y ntp ntpdate ntp-doc",
