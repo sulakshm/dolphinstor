@@ -11,7 +11,7 @@ resource "digitalocean_droplet" "demo-admin" {
       user = "root"
       type = "ssh"
       key_file = "${var.pvt_key}"
-      timeout = "2m"
+      timeout = "10m"
   }
 
   provisioner "remote-exec" {
@@ -25,19 +25,10 @@ resource "digitalocean_droplet" "demo-admin" {
      destination = "/opt/scripts/"
   }
 
-#  provisioner "file" {
-#     source = "${path.module}/scripts/cephdeploy.repo"
-#     destination = "/etc/yum.repos.d/cephdeploy.repo"
-#  }
-
-#  provisioner "remote-exec" {
-#    inline = [
-#      "useradd -d /home/infernalis -m infernalis",
-#      "echo 'infernalis ALL=(root) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/infernalis",
-#      "sudo chmod 0440 /etc/sudoers.d/infernalis",
-#      "ssh-keygen -t rsa -N \"\" -f /home/infernalis/.ssh/id_rsa",
-#    ]
-#  }
+  provisioner "file" {
+     source = "${path.module}/scripts/cephdeploy.repo"
+     destination = "/etc/yum.repos.d/cephdeploy.repo"
+  }
 
   provisioner "remote-exec" {
     inline = [
@@ -49,6 +40,9 @@ resource "digitalocean_droplet" "demo-admin" {
       "/opt/scripts/fixupetcd.sh ${digitalocean_droplet.demo-admin.ipv4_address_private}",
       "sudo systemctl enable etcd",
       "sudo systemctl start etcd",
+
+      "sudo yum install -y ceph-deploy",
+      "sudo yum install -y ntp ntpdate ntp-doc",
     ]
   }
 }
