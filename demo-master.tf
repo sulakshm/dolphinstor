@@ -38,7 +38,7 @@ resource "digitalocean_droplet" "demo-master" {
       "sudo yum-config-manager --enable cr",
       "sudo yum install -y etcd cryptsetup.x86_64 cryptsetup-libs.x86_64",
       "sudo chmod +x /opt/scripts/*.sh",
-      "/opt/scripts/fixupetcd.sh ${digitalocean_droplet.demo-master-0.ipv4_address_private}",
+      "/opt/scripts/fixupetcd.sh ${digitalocean_droplet.demo-master.0.ipv4_address_private}",
       "sudo systemctl enable etcd",
       "sudo systemctl start etcd",
     ]

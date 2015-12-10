@@ -31,7 +31,7 @@ resource "digitalocean_droplet" "demo-minion" {
       "export PATH=$PATH:/usr/bin",
       "sudo yum install -y etcd cryptsetup.x86_64 cryptsetup-libs.x86_64",
       "sudo chmod +x /opt/scripts/*.sh",
-      "/opt/scripts/fixupetcd.sh ${digitalocean_droplet.demo-master-0.ipv4_address_private}",
+      "/opt/scripts/fixupetcd.sh ${digitalocean_droplet.demo-master.0.ipv4_address_private}",
     ]
   }
 }
