@@ -1,5 +1,5 @@
 users:
-  user1:
+  cephadm:
     fullname: cephadm
     uid: 5000
     gid: 5000
@@ -11,7 +11,7 @@ users:
     enforce_password: True
     key.pub: True
 
-  user2:
+  demo:
     fullname: demo
     uid: 5031
     gid: 5031
