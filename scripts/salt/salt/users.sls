@@ -26,5 +26,10 @@
     - present
     - user: {{ user }}
     - source: salt://users/{{ user }}/keys/key.pub
+  ssh_known_hosts:
+    - present
+    - user: {{ user }}
+    - key: salt://users/{{ user }}/keys/key.pub
+    - name: "demo-admin"
 {% endif %}
 {% endfor %}

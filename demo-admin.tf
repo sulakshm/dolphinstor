@@ -50,6 +50,7 @@ resource "digitalocean_droplet" "demo-admin" {
       "echo \"demo:demo\" | chpasswd",
       "su -c 'cat /dev/zero | ssh-keygen -t rsa -N \"\" ' demo",
       "sudo cp /home/demo/.ssh/id_rsa.pub /srv/salt/users/demo/keys/key.pub",
+      "sudo salt \"*\" state.highstate",
       "sudo yum install -y ceph-deploy",
       "sudo yum install -y ntp ntpdate ntp-doc",
     ]
