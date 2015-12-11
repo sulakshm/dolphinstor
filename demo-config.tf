@@ -20,6 +20,10 @@ resource "null_resource" "cluster-config" {
   }
 
     provisioner "local-exec" {
+     command = "echo ${join(\" \", digitalocean_droplet.demo-admin.*.ipv4_address)} > node.admin"
+    }
+
+    provisioner "local-exec" {
      command = "echo ${join(\" \", digitalocean_droplet.demo-master.*.ipv4_address_private)} > node.master.private"
     }
 
