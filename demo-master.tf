@@ -36,6 +36,7 @@ resource "digitalocean_droplet" "demo-master" {
       "export PATH=$PATH:/usr/bin",
       "sudo yum install -y epel-release yum-utils",
       "sudo yum-config-manager --enable cr",
+      "sudo yum install -y yum-plugin-priorities",
       "sudo yum install -y etcd cryptsetup.x86_64 cryptsetup-libs.x86_64 salt-minion",
       "sudo chmod +x /opt/scripts/*.sh",
       "/opt/scripts/fixupetcd.sh ${digitalocean_droplet.demo-master.0.ipv4_address_private}",

@@ -1,10 +1,17 @@
 #!/bin/bash
 NODES=""
 i=0
+
+mkdir -p /opt/nodes
+chmod 0755 /opt/nodes
+
 for ip in "$@"
 do
-    echo "$ip demo-minion-$i" >> /etc/hosts
-    NODES="$NODES demo-minion-$i"
+    NODE="demo-minion-$i"
+    echo "$ip $NODE" >> /etc/hosts
+    echo $NODE >> /opt/nodes/minions
+    echo "$ip" >> /opt/nodes/minions.ip
+    NODES="$NODES $NODE"
     i=$[i+1]
 done
 

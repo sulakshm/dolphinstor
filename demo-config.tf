@@ -23,6 +23,7 @@ resource "null_resource" "cluster-config" {
         "salt -t 20 '*' state.highstate",
         "/opt/scripts/fixmasters.sh ${join(\" \", digitalocean_droplet.demo-master.*.ipv4_address_private)}",
         "/opt/scripts/fixslaves.sh ${join(\" \", digitalocean_droplet.demo-minion.*.ipv4_address_private)}",
+        "su -c /opt/scripts/ceph-install.sh cephadm",
     ]
   }
 

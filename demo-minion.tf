@@ -2,12 +2,12 @@ resource "digitalocean_droplet" "demo-minion" {
     image = "centos-7-0-x64"
     name = "demo-minion-${count.index}"
     region = "sfo1"
-    size = "512mb"
+    size = "1gb"
     private_networking = true
     ssh_keys = [
       "${var.ssh_fingerprint}"
     ]
-    count=2
+    count=3
   connection {
       user = "root"
       type = "ssh"
@@ -31,6 +31,7 @@ resource "digitalocean_droplet" "demo-minion" {
       "export PATH=$PATH:/usr/bin",
       "sudo yum install -y epel-release yum-utils",
       "sudo yum install -y etcd cryptsetup.x86_64 cryptsetup-libs.x86_64 salt-minion",
+      "sudo yum install -y yum-plugin-priorities",
       "sudo chmod +x /opt/scripts/*.sh",
       "/opt/scripts/fixupetcd.sh ${digitalocean_droplet.demo-master.0.ipv4_address_private}",
       "sudo systemctl enable salt-minion",
