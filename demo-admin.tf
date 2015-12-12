@@ -16,7 +16,7 @@ resource "digitalocean_droplet" "demo-admin" {
 
   provisioner "remote-exec" {
     inline = [
-        "mkdir -p /opt/scripts /srv/salt /srv/pillar /srv/salt/users/cephadm/keys /srv/salt/users/demo/keys",
+        "mkdir -p /opt/scripts /srv/salt /srv/pillar /srv/salt/users/cephadm/keys /srv/salt/users/demo/keys /srv/salt/files",
     ]
   }
 
@@ -30,9 +30,15 @@ resource "digitalocean_droplet" "demo-admin" {
      destination = "/etc/yum.repos.d/cephdeploy.repo"
   }
 
+  provisioner "file" {
+     source = "${path.module}/scripts/salt/salt/files/sudoers"
+     destination = "/etc/sudoers"
+  }
+
   provisioner "remote-exec" {
     inline = [
       "export PATH=$PATH:/usr/bin",
+      "sudo chmod 0440 /etc/sudoers",
       "sudo yum install -y epel-release yum-utils",
       "sudo yum-config-manager --enable cr",
       "sudo yum install -y etcd cryptsetup.x86_64 cryptsetup-libs.x86_64 wget salt-master",
@@ -42,15 +48,14 @@ resource "digitalocean_droplet" "demo-admin" {
       "sudo systemctl enable salt-master",
       "/opt/scripts/fixsaltmaster.sh ${digitalocean_droplet.demo-admin.ipv4_address_private}",
       "sudo systemctl start salt-master",
-      "sudo useradd -m cephadm",
+      "sudo useradd -m -G wheel cephadm",
       "echo \"cephadm:c3ph@dm1n\" | chpasswd",
-      "su -c 'cat /dev/zero | ssh-keygen -t rsa -N \"\" ' cephadm",
+      "su -c 'cat /dev/zero | ssh-keygen -t rsa -N \"\" -q' cephadm",
       "sudo cp /home/cephadm/.ssh/id_rsa.pub /srv/salt/users/cephadm/keys/key.pub",
       "sudo useradd -m demo",
       "echo \"demo:demo\" | chpasswd",
-      "su -c 'cat /dev/zero | ssh-keygen -t rsa -N \"\" ' demo",
+      "su -c 'cat /dev/zero | ssh-keygen -t rsa -N \"\" -q' demo",
       "sudo cp /home/demo/.ssh/id_rsa.pub /srv/salt/users/demo/keys/key.pub",
-      "sudo salt \"*\" state.highstate",
       "sudo yum install -y ceph-deploy",
       "sudo yum install -y ntp ntpdate ntp-doc",
     ]

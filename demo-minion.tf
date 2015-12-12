@@ -7,7 +7,7 @@ resource "digitalocean_droplet" "demo-minion" {
     ssh_keys = [
       "${var.ssh_fingerprint}"
     ]
-    count=1
+    count=2
   connection {
       user = "root"
       type = "ssh"

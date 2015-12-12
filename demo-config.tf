@@ -16,6 +16,13 @@ resource "null_resource" "cluster-config" {
   provisioner "remote-exec" {
     inline = [
         "salt-key -Ay",
+        "salt -t 10 '*' test.ping",
+        "salt -t 10 '*' test.ping",
+        "salt -t 10 '*' test.ping",
+        "salt -t 10 '*' test.ping",
+        "salt -t 20 '*' state.highstate",
+        "/opt/scripts/fixmasters.sh ${join(\" \", digitalocean_droplet.demo-master.*.ipv4_address_private)}",
+        "/opt/scripts/fixslaves.sh ${join(\" \", digitalocean_droplet.demo-minion.*.ipv4_address_private)}",
     ]
   }
 
