@@ -45,9 +45,9 @@ resource "digitalocean_droplet" "demo-admin" {
  
       "sudo yum install -y etcd cryptsetup.x86_64 cryptsetup-libs.x86_64 wget salt-master",
       "chmod +x /opt/scripts/*.sh",
+      "sudo cp -af /opt/scripts/salt/* /srv",
       "/opt/scripts/fixadmin.sh ${digitalocean_droplet.demo-admin.ipv4_address} ${digitalocean_droplet.demo-admin.ipv4_address_private}",
 
-      "sudo cp -af /opt/scripts/salt/* /srv",
       "sudo systemctl enable salt-master",
       "sudo systemctl start salt-master",
       "sudo useradd -m -G wheel cephadm",
