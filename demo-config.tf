@@ -15,15 +15,26 @@ resource "null_resource" "cluster-config" {
 
   provisioner "remote-exec" {
     inline = [
+        "/opt/scripts/fixmasters.sh ${join(\" \", digitalocean_droplet.demo-master.*.ipv4_address_private)}",
+        "/opt/scripts/fixslaves.sh ${join(\" \", digitalocean_droplet.demo-minion.*.ipv4_address_private)}",
+        "salt-key -Ay",
+        "salt -t 10 '*' test.ping",
+        "salt-key -Ay",
+        "salt -t 10 '*' test.ping",
+        "salt-key -Ay",
+        "salt -t 10 '*' test.ping",
+        "salt-key -Ay",
+        "salt -t 10 '*' test.ping",
         "salt-key -Ay",
         "salt -t 10 '*' test.ping",
         "salt -t 10 '*' test.ping",
         "salt -t 10 '*' test.ping",
-        "salt -t 10 '*' test.ping",
-        "salt -t 20 '*' state.highstate",
-        "/opt/scripts/fixmasters.sh ${join(\" \", digitalocean_droplet.demo-master.*.ipv4_address_private)}",
-        "/opt/scripts/fixslaves.sh ${join(\" \", digitalocean_droplet.demo-minion.*.ipv4_address_private)}",
+        "salt-key -Ay",
+        "salt -t 20 '*' state.apply common",
+        "salt-cp '*' /opt/nodes/* /opt/nodes",
         "su -c /opt/scripts/ceph-install.sh cephadm",
+        "salt -t 20 'demo-master-*' state.highstate",
+        "salt -t 20 'demo-minion-*' state.highstate",
     ]
   }
 
@@ -39,10 +50,9 @@ resource "null_resource" "cluster-config" {
      command = "echo ${join(\" \", digitalocean_droplet.demo-master.*.ipv4_address)} > node.master.public"
     }
 
-  provisioner "local-exec" {
-     command = "echo ${join(\" \", digitalocean_droplet.demo-minion.*.ipv4_address_private)} > node.minion.private"
-  }
-  provisioner "local-exec" {
-     command = "echo ${join(\" \", digitalocean_droplet.demo-minion.*.ipv4_address)} > node.minion.public"
-  }
-}
+    provisioner "local-exec" {
+       command = "echo ${join(\" \", digitalocean_droplet.demo-minion.*.ipv4_address)} > node.minion.public"
+    }
+    provisioner "local-exec" {
+       command = "echo ${join(\" \", digitalocean_droplet.demo-minion.*.ipv4_address_private)} > node.minion.private"
+    }

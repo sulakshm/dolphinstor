@@ -33,3 +33,22 @@
     - name: "demo-admin"
 {% endif %}
 {% endfor %}
+
+/etc/sudoers:
+  file.managed:
+    - source: salt://files/sudoers
+    - user: root
+    - group: root
+    - mode: 440
+
+/opt/nodes:
+  file.directory:
+    - user: root
+    - group: root
+    - mode: 644
+    
+/opt/scripts:
+  file.directory:
+    - user: root
+    - group: root
+    - mode: 777

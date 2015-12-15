@@ -6,6 +6,8 @@ cd $HOME/my-cluster
 echo "1. Preparing for ceph deployment"
 ceph-deploy --username cephadm new demo-master-0
 echo "osd pool default size = 2" >> ceph.conf
+echo "osd pool default pg num = 16" >> ceph.conf
+echo "osd pool default pgp num = 16" >> ceph.conf
 echo "public network = `cat /opt/nodes/admin.private`/16" >> ceph.conf
 
 echo "2. Installing ceph components"
@@ -54,3 +56,6 @@ done
 
 echo "8. Set permission on keyring"
 sudo chmod +r /etc/ceph/ceph.client.admin.keyring
+
+echo "9. bootstrap ceph cluster with osd pool"
+sudo ceph osd pool create blkdocker 16 16

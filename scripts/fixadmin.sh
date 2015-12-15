@@ -11,5 +11,4 @@ echo "$2" > /opt/nodes/admin.private
 echo "Host demo-admin" >> /etc/ssh/ssh_config
 echo "  StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 
-sudo sed -i "s/#interface:.*/interface: ${2}/" /etc/salt/master
-sudo sed -i "s/etcdmaster:.*/etcdmaster: ${2}/" /srv/pillar/config.sls
+sed -i "s/#interface:.*/interface: ${2}/" /etc/salt/master

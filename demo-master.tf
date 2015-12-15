@@ -17,7 +17,7 @@ resource "digitalocean_droplet" "demo-master" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo mkdir -p /opt/scripts",
+      "mkdir -p /opt/scripts",
     ]
   }
 
@@ -34,17 +34,14 @@ resource "digitalocean_droplet" "demo-master" {
   provisioner "remote-exec" {
     inline = [
       "export PATH=$PATH:/usr/bin",
-      "sudo yum install -y epel-release yum-utils",
-      "sudo yum-config-manager --enable cr",
-      "sudo yum install -y yum-plugin-priorities",
-      "sudo yum install -y etcd cryptsetup.x86_64 cryptsetup-libs.x86_64 salt-minion",
-      "sudo chmod +x /opt/scripts/*.sh",
-      "/opt/scripts/fixupetcd.sh ${digitalocean_droplet.demo-master.0.ipv4_address_private}",
-      "sudo systemctl enable etcd",
-      "sudo systemctl start etcd",
-      "sudo systemctl enable salt-minion",
+      "yum install -y epel-release yum-utils",
+      "yum-config-manager --enable cr",
+      "yum install -y yum-plugin-priorities",
+      "yum install -y salt-minion",
+      "chmod +x /opt/scripts/*.sh",
+      "systemctl enable salt-minion",
       "/opt/scripts/fixsaltminion.sh ${digitalocean_droplet.demo-admin.ipv4_address_private}",
-      "sudo systemctl start salt-minion",
+      "systemctl start salt-minion",
     ]
   }
 }

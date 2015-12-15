@@ -1,5 +1,7 @@
 base:
     "*":
-        - users
-        - files
-        - apps
+        - common
+    "demo-master-*":
+        - kvstore
+    "demo-minion-*":
+        - minion
