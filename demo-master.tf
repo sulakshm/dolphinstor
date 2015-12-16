@@ -1,5 +1,5 @@
 resource "digitalocean_droplet" "demo-master" {
-    image = "centos-7-0-x64"
+    image = "dsimg-demo-master-v1"
     name = "demo-master-${count.index}"
     region = "sfo1"
     size = "512mb"
@@ -15,12 +15,6 @@ resource "digitalocean_droplet" "demo-master" {
       timeout = "10m"
   }
 
-  provisioner "remote-exec" {
-    inline = [
-      "mkdir -p /opt/scripts",
-    ]
-  }
-
   provisioner "file" {
      source = "${path.module}/scripts/"
      destination = "/opt/scripts/"
@@ -28,14 +22,8 @@ resource "digitalocean_droplet" "demo-master" {
 
   provisioner "remote-exec" {
     inline = [
-      "export PATH=$PATH:/usr/bin",
-      "yum install -y epel-release yum-utils",
-      "yum-config-manager --enable cr",
-      "yum install -y yum-plugin-priorities",
-      "yum install -y salt-minion",
-      "chmod +x /opt/scripts/*.sh",
-      "systemctl enable salt-minion",
       "/opt/scripts/fixsaltminion.sh ${digitalocean_droplet.demo-admin.ipv4_address_private}",
+      "systemctl enable salt-minion",
       "systemctl start salt-minion",
     ]
   }
