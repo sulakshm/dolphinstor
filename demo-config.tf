@@ -56,3 +56,4 @@ resource "null_resource" "cluster-config" {
     provisioner "local-exec" {
        command = "echo ${join(\" \", digitalocean_droplet.demo-minion.*.ipv4_address_private)} > node.minion.private"
     }
+}

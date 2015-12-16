@@ -11,7 +11,7 @@ echo "osd pool default pgp num = 16" >> ceph.conf
 echo "public network = `cat /opt/nodes/admin.private`/16" >> ceph.conf
 
 echo "2. Installing ceph components"
-ceph-deploy --username cephadm install demo-admin
+ceph-deploy --username cephadm install --release hammer demo-admin
 
 for node in `cat /opt/nodes/masters`
 do
@@ -57,5 +57,3 @@ done
 echo "8. Set permission on keyring"
 sudo chmod +r /etc/ceph/ceph.client.admin.keyring
 
-echo "9. bootstrap ceph cluster with osd pool"
-sudo ceph osd pool create blkdocker 16 16

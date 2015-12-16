@@ -1,7 +1,7 @@
 # /etc/sysconfig/docker
 
 # Modify these options if you want to change the way the docker daemon runs
-OPTIONS='--debug --selinux-enabled -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --tls=false --storage-opt dm.override_udev_sync_check=true --stg-kv-store=etcd:{% set comma = joiner(",") %}{% for m in pillar.get('etcdcluster', {}) %}{% for k,v in m.items() %}{{comma()}}http://{{v}}:4001{% endfor %}{% endfor %} --volume-qos=true'
+OPTIONS='--debug --selinux-enabled -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --tls=false --storage-opt dm.override_udev_sync_check=true --stg-kv-store=etcd:{% set comma = joiner(",") %}{% for m in pillar.get('etcdcluster', {}) %}{% for k,v in m.items() %}{{comma()}}{{v}}:4001{% endfor %}{% endfor %} --volume-qos=true'
 
 #OPTIONS='--selinux-enabled -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --tls=false --storage-opt dm.override_udev_sync_check=true'
 

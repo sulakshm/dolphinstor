@@ -26,11 +26,6 @@ resource "digitalocean_droplet" "demo-master" {
      destination = "/opt/scripts/"
   }
 
-  provisioner "file" {
-     source = "${path.module}/scripts/cephdeploy.repo"
-     destination = "/etc/yum.repos.d/cephdeploy.repo"
-  }
-
   provisioner "remote-exec" {
     inline = [
       "export PATH=$PATH:/usr/bin",

@@ -42,6 +42,8 @@ resource "digitalocean_droplet" "demo-admin" {
       "yum install -y epel-release yum-utils",
       "yum-config-manager --enable cr",
       "yum install -y yum-plugin-priorities",
+      "yum clean all",
+      "yum makecache",
  
       "yum install -y wget salt-master",
       "chmod +x /opt/scripts/*.sh",
@@ -59,7 +61,7 @@ resource "digitalocean_droplet" "demo-admin" {
       "echo \"demo:demo\" | chpasswd",
       "su -c 'cat /dev/zero | ssh-keygen -t rsa -N \"\" -q' demo",
       "cp /home/demo/.ssh/id_rsa.pub /srv/salt/users/demo/keys/key.pub",
-      "yum install -y ceph-deploy",
+      "yum install -y ceph-deploy --nogpgcheck",
       "yum install -y ntp ntpdate ntp-doc",
     ]
   }

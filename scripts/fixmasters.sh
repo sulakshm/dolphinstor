@@ -20,9 +20,3 @@ done
 
 echo "Host $NODES" >> /etc/ssh/ssh_config
 echo "  StrictHostKeyChecking no" >> /etc/ssh/ssh_config
-
-#for ip in "$@"
-#do
-#    NODE="demo-master-$i"
-#    su -c "scp /opt/nodes/masters.ip  $NODE:/opt/nodes" cephadm
-#done
