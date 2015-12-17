@@ -1,4 +1,9 @@
 # dolphinstor
+
+Short version:
+Edit MASTER/MINIONS in mkdemo.sh, update terraform.tfvars for DO credentials. Then run mkdemo.sh
+
+Long version:
 This repo shall hold dolphinstor binary bits for demo purposes.
 a) Fill up terraform.tfvars with your DO credentials.
 1. Create a DO token from DO admin page.
