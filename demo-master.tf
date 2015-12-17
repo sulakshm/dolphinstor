@@ -1,5 +1,5 @@
 resource "digitalocean_droplet" "demo-master" {
-    image = "14872177"
+    image = "14882540"
     name = "demo-master-${count.index}"
     region = "sfo1"
     size = "512mb"
@@ -17,12 +17,7 @@ resource "digitalocean_droplet" "demo-master" {
 
   provisioner "remote-exec" {
     inline = [
-      "systemctl enable salt-minion",
-      "systemctl stop salt-minion",
-      "/opt/scripts/fixsaltminion.sh ${digitalocean_droplet.demo-admin.ipv4_address_private}",
-      "rm -rf /etc/salt/pki /var/cache/salt",
-      "${self.name} > /etc/salt/minion_id",
-      "systemctl restart salt-minion",
+      "/opt/scripts/fixsaltminion.sh ${digitalocean_droplet.demo-admin.ipv4_address_private} ${self.name}",
     ]
   }
 }

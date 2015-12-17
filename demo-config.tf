@@ -30,7 +30,7 @@ resource "null_resource" "cluster-config" {
         "salt -t 10 '*' test.ping",
         "salt -t 10 '*' test.ping",
         "salt-key -Ay",
-        "salt -t 20 '*' state.apply common",
+        "salt '*' state.apply common",
         "salt-cp '*' /opt/nodes/* /opt/nodes",
         "su -c /opt/scripts/ceph-install.sh cephadm",
         "salt -t 20 'demo-master-*' state.highstate",
