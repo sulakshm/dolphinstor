@@ -1,13 +1,13 @@
-resource "digitalocean_droplet" "demo-master" {
-    image = "14882540"
-    name = "demo-master-${count.index}"
+resource "digitalocean_droplet" "minion" {
+    image = "14900407"
+    name = "demo-minion-${count.index}"
     region = "sfo1"
-    size = "512mb"
+    size = "1gb"
     private_networking = true
     ssh_keys = [
       "${var.ssh_fingerprint}"
     ]
-    count=1
+    count=3
   connection {
       user = "root"
       type = "ssh"
@@ -17,7 +17,7 @@ resource "digitalocean_droplet" "demo-master" {
 
   provisioner "remote-exec" {
     inline = [
-      "/opt/scripts/fixsaltminion.sh ${digitalocean_droplet.demo-admin.ipv4_address_private} ${self.name}",
+      "/opt/scripts/fixsaltminion.sh ${digitalocean_droplet.admin.ipv4_address_private} ${self.name}",
     ]
   }
 }
